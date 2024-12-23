@@ -1,0 +1,79 @@
+.search-bar {
+  display: flex;
+  gap: 0.2rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  background-color: white;
+}
+
+.header-text,
+.loading-text,
+.noResults-text {
+  text-align: left;
+  font-size: 2rem;
+  margin: 1rem;
+}
+
+.search-button {
+  height: 2rem;
+  border-radius: 0.5rem;
+  border-width: 0.01rem;
+  border-color: #d3d3d3;
+}
+
+.search-text {
+  height: 2rem;
+  width: 50%;
+  border-radius: 0.5rem;
+  border-width: 0.1rem;
+  border-color: #d3d3d3;
+}
+
+.main {
+  background-color: #213555;
+}
+
+.movie-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  margin-left: 3rem;
+  margin-right: 3rem;
+  margin-bottom: 3rem;
+}
+
+.movie-card {
+  margin: 8px;
+  box-sizing: border-box;
+  min-width: 400px;
+  max-width: 400px;
+}
+
+.poster-wrapper {
+  width: 100%; /* Full width of the item */
+  height: 200px; /* Fixed height for uniformity */
+  overflow: hidden; /* Hide overflow for cropping */
+}
+
+.poster-wrapper img {
+  border-radius: 0.5rem;
+  width: 100%; /* Make the image fill the width of its container */
+  height: auto; /* Maintain aspect ratio */
+  object-fit: cover; /* Resize image to cover the container */
+  object-position: center; /* Center the image within the container */
+}
+
+@media (width < 800px) {
+  .movie-list {
+    flex-direction: column;
+  }
+}
+
+h1,
+p {
+  color: #3e5879;
+}
