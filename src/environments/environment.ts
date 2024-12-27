@@ -1,3 +1,3 @@
 export const environment = {
-  apiUrl: 'https://movie-explorer-backend.azurewebsites.net/movies',
+  apiUrl: 'https://movie-explorer-backend.azurewebsites.net/',
 };

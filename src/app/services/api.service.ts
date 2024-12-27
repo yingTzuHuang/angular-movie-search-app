@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Movie } from '../models/domain';
-import { catchError, map, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { ApiMovie } from '../models/api';
@@ -20,13 +20,13 @@ export class ApiService {
     };
   }
 
-  public getMoviesBySearchText$(text: string) {
+  public getMoviesBySearchText$(text: string): Observable<Movie[]> {
     let options = text
       ? { params: new HttpParams().set('searchTerm', text) }
       : undefined;
 
     return this.http
-      .get<ApiMovie[]>(environment.apiUrl, options)
+      .get<ApiMovie[]>(environment.apiUrl + 'movies', options)
       .pipe(
         map((apiMovies) =>
           apiMovies.map((apiMovie) => this.mapApiMovieToMovie(apiMovie))
@@ -42,7 +42,7 @@ export class ApiService {
       );
   }
 
-  public getAllMovies$() {
+  public getAllMovies$(): Observable<Movie[]> {
     return this.getMoviesBySearchText$('');
   }
 }
