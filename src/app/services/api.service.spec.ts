@@ -6,7 +6,7 @@ import {
   HttpTestingController,
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
-import { Movie } from '../interfaces/movie';
+import { Movie } from '../models/domain/movie';
 
 describe('ApiService', () => {
   let service: ApiService;
@@ -46,7 +46,7 @@ describe('ApiService', () => {
       { id: '2', title: 'Another Movie', year: 2022, poster: '/test-path2' },
     ];
 
-    service.getMoviesByTitle$('movie').subscribe((movies) => {
+    service.getMoviesBySearchText$('movie').subscribe((movies) => {
       expect(movies.length).toBe(2);
       expect(movies).toEqual(dummyMovies);
     });
@@ -62,7 +62,7 @@ describe('ApiService', () => {
       { id: '2', title: 'Another Movie', year: 2022, poster: '/test-path2' },
     ];
 
-    service.getMoviesByTitle$('another').subscribe((movies) => {
+    service.getMoviesBySearchText$('another').subscribe((movies) => {
       expect(movies.length).toBe(1);
       expect(movies[0].title).toBe('Another Movie');
     });

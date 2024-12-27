@@ -1,37 +1,60 @@
 .search-bar {
   display: flex;
-  gap: 0.2rem;
+  flex-direction: row;
+  gap: 1rem;
   justify-content: center;
   align-items: center;
-  margin-top: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
   background-color: white;
 }
 
-.header-text,
-.loading-text,
-.noResults-text {
-  text-align: left;
-  font-size: 2rem;
-  margin: 1rem;
+.header-text {
+  color: #3e5879;
+  margin-block: 0.5rem;
 }
 
+.loading-text,
+.noResults-text {
+  text-align: center;
+  font-size: 2rem;
+  margin: 1rem;
+  color: white;
+}
+/* 
 .search-button {
   height: 2rem;
   border-radius: 0.5rem;
   border-width: 0.01rem;
   border-color: #d3d3d3;
+} */
+::placeholder {
+  font-style: italic;
+  color: rgb(242, 242, 242);
+  opacity: 1; /* Ensures full opacity in Firefox */
 }
 
 .search-text {
+  color: white;
+  background-color: #3e587980;
+  border-radius: 0.8rem;
+  border: 0;
+  color: white;
   height: 2rem;
-  width: 50%;
-  border-radius: 0.5rem;
-  border-width: 0.1rem;
-  border-color: #d3d3d3;
+  padding: 5px 6px;
+  width: 40%;
+  text-align: center;
 }
 
 .main {
   background-color: #213555;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.search-result {
+  flex: 1;
 }
 
 .movie-list {
@@ -40,23 +63,28 @@
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
-  margin-top: 2rem;
+  padding-top: 2rem;
   margin-left: 3rem;
   margin-right: 3rem;
   margin-bottom: 3rem;
+  justify-content: center;
 }
 
 .movie-card {
   margin: 8px;
   box-sizing: border-box;
-  min-width: 400px;
-  max-width: 400px;
+  min-width: 200px;
+  max-width: 200px;
+  max-height: 300px;
+  overflow: hidden;
 }
 
 .poster-wrapper {
   width: 100%; /* Full width of the item */
   height: 200px; /* Fixed height for uniformity */
   overflow: hidden; /* Hide overflow for cropping */
+  min-height: 210px;
+  max-height: 210px;
 }
 
 .poster-wrapper img {
@@ -67,13 +95,35 @@
   object-position: center; /* Center the image within the container */
 }
 
+.movie-info {
+  display: flex;
+  flex-direction: row;
+  align-items: last baseline;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
 @media (width < 800px) {
+  .main,
   .movie-list {
     flex-direction: column;
   }
+
+  .search-bar {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .search-text {
+    width: 80%;
+  }
 }
 
-h1,
-p {
+small {
   color: #3e5879;
+  font-weight: 700;
+}
+
+input:focus {
+  outline: none;
 }

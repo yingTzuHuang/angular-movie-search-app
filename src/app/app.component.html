@@ -4,16 +4,13 @@
     <input
       type="text"
       class="search-text"
-      placeholder="Search movie titles..."
+      placeholder="Search movie titles / release year..."
       #searchText
       (keydown.enter)="searchMovies(searchText.value)"
     />
-    <button class="search-button" (click)="searchMovies(searchText.value)">
-      Search
-    </button>
   </div>
-  <!-- TODO: Add pagination -->
-  <div *ngIf="movies$ | async as movies; else loading">
+  <!-- TODO: Add pagination / infinite scroll -->
+  <div class="search-result" *ngIf="movies$ | async as movies; else loading">
     <div class="movie-list" *ngIf="movies.length > 0; else noResults">
       <mat-card
         *ngFor="let movie of movies"
@@ -23,10 +20,10 @@
         <div class="poster-wrapper">
           <img mat-card-image [src]="movie.poster" [alt]="movie.title" />
         </div>
-        <mat-card-content>
-          <h2>{{ movie.title }}</h2>
-          <p>{{ movie.year }}</p>
-        </mat-card-content>
+        <div class="movie-info">
+          <h4>{{ movie.title }}</h4>
+          <small>{{ movie.year }}</small>
+        </div>
       </mat-card>
     </div>
   </div>
@@ -37,5 +34,5 @@
 </ng-template>
 
 <ng-template #noResults>
-  <h1>No movie title contains "{{ searchText.value }}"</h1>
+  <h1 class="loading-text">No movie title contains "{{ searchText.value }}"</h1>
 </ng-template>
