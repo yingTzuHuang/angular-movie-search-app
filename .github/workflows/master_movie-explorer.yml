@@ -27,11 +27,14 @@ jobs:
       - name: Build Angular app
         run: ng build --configuration production
 
-      - name: Upload build artifacts
+      - name: Zip artifact for deployment
+        run: zip release.zip ./dist -r
+
+      - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: angular-app
-          path: dist/movie-explorer
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
