@@ -8,6 +8,7 @@ An Angular App for searching movies.
    - Add pagination/infinite scroll
    - Search bar - clear tooltip on edit and set cursor on the left
    - Search bar - add clear or cross button
+   - Allow sorting
 
 
 <img width="391" alt="image" src="https://github.com/user-attachments/assets/62077906-5395-4882-a62b-3eb45e116474" />
