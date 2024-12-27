@@ -6,7 +6,7 @@ name: Build and deploy Node.js app to Azure Web App - movie-explorer
 on:
   push:
     branches:
-      - deploy/fix-github-workflow5
+      - master
   workflow_dispatch:
 
 jobs:
@@ -57,17 +57,17 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      # - name: Login to Azure
-      #   uses: azure/login@v2
-      #   with:
-      #     client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_74DF342C002D44F284F4196C4FB14C2D }}
-      #     tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CE16665D1592438D979F22206974B9F9 }}
-      #     subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FE5253A79C4143D4AA300D76DB0DFB0E }}
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_74DF342C002D44F284F4196C4FB14C2D }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CE16665D1592438D979F22206974B9F9 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FE5253A79C4143D4AA300D76DB0DFB0E }}
 
-      # - name: "Deploy to Azure Web App"
-      #   id: deploy-to-webapp
-      #   uses: azure/webapps-deploy@v3
-      #   with:
-      #     app-name: "movie-explorer"
-      #     slot-name: "Production"
-      #     package: dist/movie-explorer
+      - name: "Deploy to Azure Web App"
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: "movie-explorer"
+          slot-name: "Production"
+          package: dist/movie-explorer
