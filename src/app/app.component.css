@@ -79,6 +79,10 @@
   overflow: hidden;
 }
 
+.movie-card.h4 {
+  font-family: "Gurmuki MN", sans-serif;
+}
+
 .poster-wrapper {
   width: 100%; /* Full width of the item */
   height: 200px; /* Fixed height for uniformity */
