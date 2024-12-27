@@ -6,7 +6,7 @@ name: Build and deploy Node.js app to Azure Web App - movie-explorer
 on:
   push:
     branches:
-      - master
+      - deploy/fix-github-workflow3
   workflow_dispatch:
 
 jobs:
@@ -30,11 +30,19 @@ jobs:
       - name: Build Angular app
         run: ng build --configuration production
 
+      - name: Zip artifact for deployment
+        run: zip release.zip ./dist -r
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-app
+          path: release.zip
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: angular-app
-          path: dist/movie-explorer
 
   deploy:
     runs-on: ubuntu-latest
@@ -50,19 +58,23 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: angular-app
-          path: dist/movie-explorer
 
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_74DF342C002D44F284F4196C4FB14C2D }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CE16665D1592438D979F22206974B9F9 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FE5253A79C4143D4AA300D76DB0DFB0E }}
+      - name: Unzip artifact for deployment
+        run: unzip release.zip
 
-      - name: "Deploy to Azure Web App"
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: "movie-explorer"
-          slot-name: "Production"
-          package: dist/movie-explorer
+      - name: List files and folders in the current directory
+        run: ls -alh
+      # - name: Login to Azure
+      #   uses: azure/login@v2
+      #   with:
+      #     client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_74DF342C002D44F284F4196C4FB14C2D }}
+      #     tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CE16665D1592438D979F22206974B9F9 }}
+      #     subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FE5253A79C4143D4AA300D76DB0DFB0E }}
+
+      # - name: "Deploy to Azure Web App"
+      #   id: deploy-to-webapp
+      #   uses: azure/webapps-deploy@v3
+      #   with:
+      #     app-name: "movie-explorer"
+      #     slot-name: "Production"
+      #     package: dist/movie-explorer
