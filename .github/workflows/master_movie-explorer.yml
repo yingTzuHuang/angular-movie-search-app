@@ -21,13 +21,9 @@ jobs:
       - name: Install GitHub CLI
         run: sudo apt-get install -y gh
 
-      - name: Authenticate GitHub CLI
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh auth login --with-token <<< "$GH_TOKEN"
-
       - name: Delete existing artifact
         env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PREFIX: "angular-app"
         run: |
           repo="${{ github.repository }}"
