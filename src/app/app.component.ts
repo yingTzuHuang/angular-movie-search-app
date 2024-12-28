@@ -4,10 +4,11 @@ import { Movie } from './models/domain/movie';
 import { ApiService } from './services/api.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, MatCardModule],
+  imports: [CommonModule, MatCardModule, MatProgressSpinnerModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
