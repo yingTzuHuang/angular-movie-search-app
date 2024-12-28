@@ -27,14 +27,15 @@ jobs:
           PREFIX: "angular-app"
         run: |
           repo="${{ github.repository }}"
-          artifacts=$(gh api repos/$repo/actions/artifacts --jq ".artifacts[] | select(.name | startswith(env.PREFIX)) | .id")
+          artifacts=$(GH_TOKEN=$GH_TOKEN gh api repos/$repo/actions/artifacts --jq ".artifacts[] | select(.name | startswith(env.PREFIX)) | .id")
           if [ -z "$artifacts" ]; then
             echo "No artifacts found with prefix '$PREFIX'."
           else
             for artifact_id in $artifacts; do
               echo "Deleting artifact ID: $artifact_id"
-              gh api --method DELETE repos/$repo/actions/artifacts/$artifact_id
+              GH_TOKEN=$GH_TOKEN gh api --method DELETE repos/$repo/actions/artifacts/$artifact_id
             done
+          fi
 
   #     - name: Install Angular CLI
   #       run: npm install -g @angular/cli
