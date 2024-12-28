@@ -10,7 +10,7 @@
     />
   </div>
   <!-- TODO: Add pagination / infinite scroll -->
-  <div class="search-result" *ngIf="movies$ | async as movies; else loading">
+  <div class="result-area" *ngIf="movies$ | async as movies; else loading">
     <div class="movie-list" *ngIf="movies.length > 0; else noResults">
       <mat-card
         *ngFor="let movie of movies"
@@ -30,9 +30,13 @@
 </main>
 
 <ng-template #loading>
-  <p class="loading-text">Loading&hellip;</p>
+  <div class="result-area">
+    <mat-spinner></mat-spinner>
+  </div>
 </ng-template>
 
 <ng-template #noResults>
-  <h1 class="loading-text">No movie title contains "{{ searchText.value }}"</h1>
+  <div class="result-content">
+    <h1>No movie title contains "{{ searchText.value }}"</h1>
+  </div>
 </ng-template>
