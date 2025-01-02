@@ -28,7 +28,7 @@ jobs:
       - name: Delete artifacts with a specific prefix
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PREFIX: "your-prefix" # Replace with the desired prefix
+          PREFIX: "angular-app" # Replace with the desired prefix
         run: |
           repo="${{ github.repository }}"
           artifacts=$(GH_TOKEN=$GH_TOKEN gh api repos/$repo/actions/artifacts --jq ".artifacts[] | select(.name | startswith(env.PREFIX)) | .id")
