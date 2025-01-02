@@ -3,7 +3,7 @@ name: Build and deploy Node.js app to Azure Web App - movie-explorer
 on:
   push:
     branches:
-      - set-startup-cmd
+      - deploy/set-startup-cmd
   workflow_dispatch:
 
 # add write permission to delete old artifacts
