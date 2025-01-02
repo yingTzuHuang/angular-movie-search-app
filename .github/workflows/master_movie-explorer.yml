@@ -3,7 +3,7 @@ name: Build and deploy Node.js app to Azure Web App - movie-explorer
 on:
   push:
     branches:
-      - master
+      - set-startup-cmd
   workflow_dispatch:
 
 # add write permission to delete old artifacts
@@ -103,7 +103,7 @@ jobs:
       # Step 4: Deploy to Azure Web App
       - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
+        uses: azure/webapps-deploy@v2
         with:
           app-name: "movie-explorer"
           slot-name: "Production"
