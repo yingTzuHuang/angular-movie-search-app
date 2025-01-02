@@ -18,7 +18,7 @@ jobs:
     steps:
       # Step 1: Checkout the code
       - name: Checkout code
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       # Step 2: Set up GitHub CLI
       - name: Install GitHub CLI
