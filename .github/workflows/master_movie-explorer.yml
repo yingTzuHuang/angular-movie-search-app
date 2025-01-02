@@ -6,54 +6,91 @@ on:
       - deploy/clean-up-artifacts
   workflow_dispatch:
 
+# add write permission to delete old artifacts
+permissions:
+  actions: write
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
       - uses: actions/checkout@v4
 
+      # Step 2: Set up GitHub CLI
+      - name: Install GitHub CLI
+        run: sudo apt-get install -y gh
+
+      # Step 3: Delete artifacts with a specific prefix
+      - name: Delete artifacts with a specific prefix
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PREFIX: "your-prefix" # Replace with the desired prefix
+        run: |
+          repo="${{ github.repository }}"
+          artifacts=$(GH_TOKEN=$GH_TOKEN gh api repos/$repo/actions/artifacts --jq ".artifacts[] | select(.name | startswith(env.PREFIX)) | .id")
+          if [ -z "$artifacts" ]; then
+            echo "No artifacts found with prefix '$PREFIX'."
+          else
+            for artifact_id in $artifacts; do
+              echo "Deleting artifact ID: $artifact_id"
+              GH_TOKEN=$GH_TOKEN gh api --method DELETE repos/$repo/actions/artifacts/$artifact_id
+            done
+          fi
+
+      # Step 4: Set up Node.js version
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
           node-version: "20.x"
 
+      # Step 5: Install Angular CLI
       - name: Install Angular CLI
         run: npm install -g @angular/cli
 
+      # Step 6: Install dependencies
       - name: Install dependencies
         run: npm install
 
+      # Step 7: Build Angular app
       - name: Build Angular app
         run: ng build --configuration production
 
+      # Step 8: Zip artifact for deployment
       - name: Zip artifact for deployment
         run: zip release-${{ github.run_id }}.zip ./dist -r
 
+      # Step 9: Upload artifact for deployment job
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: angular-app-${{ github.run_id }}
           path: release-${{ github.run_id }}.zip
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: "Production"
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   environment:
+  #     name: "Production"
+  #     url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+  #   permissions:
+  #     id-token: write #This is required for requesting the JWT
 
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: angular-app-${{ github.run_id }}
+  #   steps:
+  #     # Step 1: Download artifact from build job
+  #     - name: Download artifact from build job
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: angular-app-${{ github.run_id }}
 
-      - name: Unzip artifact for deployment
-        run: unzip release-${{ github.run_id }}.zip
+  #     # Step 2: Unzip artifact for deployment
+  #     - name: Unzip artifact for deployment
+  #       run: unzip release-${{ github.run_id }}.zip
 
+  #     # Step 3: Login to Azure
   #     - name: Login to Azure
   #       uses: azure/login@v2
   #       with:
@@ -61,6 +98,7 @@ jobs:
   #         tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CE16665D1592438D979F22206974B9F9 }}
   #         subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FE5253A79C4143D4AA300D76DB0DFB0E }}
 
+  #     # Step 4: Deploy to Azure Web App
   #     - name: "Deploy to Azure Web App"
   #       id: deploy-to-webapp
   #       uses: azure/webapps-deploy@v3
