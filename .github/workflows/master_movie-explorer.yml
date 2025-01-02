@@ -108,3 +108,13 @@ jobs:
           app-name: ${{ secrets.AZUREAPPSERVICE_APPNAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: dist-${{ github.run_id }}/angular-movie-search-app
+
+      # Step 5: Set Startup Command
+      - name: Set Startup Command
+        run: |
+          FOLDER_NAME=dist-${{ github.run_id }}
+          az webapp update \
+          --resource-group ${{ secrets.AZUREAPPSERVICE_RESOURCEGROUP }} \
+          --name movie-explorer \
+          --set linuxFxVersion="NODE|20-lts" \
+          --startup-file "pm2 serve /home/site/wwwroot/$FOLDER_NAME/angular-movie-search-app/browser --no-daemon --spa"
