@@ -3,7 +3,7 @@ name: Build and deploy Angular to Azure
 on:
   push:
     branches:
-      - deploy/set-startup-cmd
+      - master
   workflow_dispatch:
 
 # add write permission to delete old artifacts
