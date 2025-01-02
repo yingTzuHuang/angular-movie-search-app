@@ -3,7 +3,7 @@ name: Build and deploy Node.js app to Azure Web App - movie-explorer
 on:
   push:
     branches:
-      - deploy/clean-up-artifacts
+      - master
   workflow_dispatch:
 
 # add write permission to delete old artifacts
@@ -92,27 +92,19 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release-${{ github.run_id }}.zip
 
-      - name: Check for unzipped folder
-        run: |
-          FOLDER_NAME=dist-${{ github.run_id }}
-          if [ -d "$FOLDER_NAME" ]; then
-            echo "Folder name '$FOLDER_NAME' exists"
-          else
-            echo "Folder name '$FOLDER_NAME' does not exists"
-          fi
-  #     # Step 3: Login to Azure
-  #     - name: Login to Azure
-  #       uses: azure/login@v2
-  #       with:
-  #         client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_74DF342C002D44F284F4196C4FB14C2D }}
-  #         tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CE16665D1592438D979F22206974B9F9 }}
-  #         subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FE5253A79C4143D4AA300D76DB0DFB0E }}
+      # Step 3: Login to Azure
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_74DF342C002D44F284F4196C4FB14C2D }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CE16665D1592438D979F22206974B9F9 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FE5253A79C4143D4AA300D76DB0DFB0E }}
 
-  #     # Step 4: Deploy to Azure Web App
-  #     - name: "Deploy to Azure Web App"
-  #       id: deploy-to-webapp
-  #       uses: azure/webapps-deploy@v3
-  #       with:
-  #         app-name: "movie-explorer"
-  #         slot-name: "Production"
-  #         package: dist-${{ github.run_id }}/angular-movie-search-app
+      # Step 4: Deploy to Azure Web App
+      - name: "Deploy to Azure Web App"
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: "movie-explorer"
+          slot-name: "Production"
+          package: dist-${{ github.run_id }}/angular-movie-search-app
